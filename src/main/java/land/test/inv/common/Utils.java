@@ -1,16 +1,11 @@
 package land.test.inv.common;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.chrono.MinguoChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -111,27 +106,6 @@ public class Utils {
                 val = "";
         }
         return val;
-    }
-
-    public static java.sql.Connection connection() {
-        Properties properties = PropertiesLoader.getProperties();
-        java.sql.Connection con = null;
-        try {
-            Class.forName(properties.getProperty("datasource.driver-class-name"));
-            con = DriverManager.getConnection(properties.getProperty("datasource.url"));
-        } catch (ClassNotFoundException | SQLException | NullPointerException e) {
-            e.printStackTrace();
-        }
-        return con;
-    }
-
-    public static void prepareStatementSet(PreparedStatement pstmt, List<Object> params)
-            throws SQLException
-    {
-        PreparedStatement p = pstmt;
-        for (int vi = 0, pi = 1; vi < params.size(); vi++, pi++) {
-            p.setObject(pi, params.get(vi));
-        }
     }
 
 }

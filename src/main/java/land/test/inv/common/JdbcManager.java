@@ -1,14 +1,7 @@
 package land.test.inv.common;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 public class JdbcManager {
 
@@ -20,7 +13,14 @@ public class JdbcManager {
 	
 
 	public JdbcManager() {
-		this.con = Utils.connection();
+		try {
+			Properties properties = PropertiesLoader.getProperties();
+			Class.forName(properties.getProperty("datasource.driver-class-name"));
+			this.con = DriverManager.getConnection(properties.getProperty("datasource.url"));
+		} catch (ClassNotFoundException | SQLException | NullPointerException e) {
+			e.printStackTrace();
+			this.con = null;
+		}
 	}
 
 	public void commit() {
